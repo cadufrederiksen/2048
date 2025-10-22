@@ -1,0 +1,2 @@
+score é a soma dos nuneros que formam
+hooks das setas e pensar em como vai funcionar os eles 
