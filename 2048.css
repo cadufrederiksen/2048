@@ -31,4 +31,26 @@ hr {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 8px;
+	color: #776e65;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Per-number colors (classic 2048 palette) */
+.tile-2    { background-color: #eee4da; }
+.tile-4    { background-color: #eeca88; }
+.tile-8    { background-color: #f2b179; color: #f9f6f2; }
+.tile-16   { background-color: #f59563; color: #f9f6f2; }
+.tile-32   { background-color: #f67c5f; color: #f9f6f2; }
+.tile-64   { background-color: #f65e3b; color: #f9f6f2; }
+.tile-128  { background-color: #edcf72; color: #f9f6f2; }
+.tile-256  { background-color: #edcc61; color: #f9f6f2; }
+.tile-512  { background-color: #edc850; color: #f9f6f2; }
+.tile-1024 { background-color: #edc53f; color: #f9f6f2; }
+.tile-2048 { background-color: #edc22e; color: #f9f6f2; }
+
+/* Fallback for numbers > 2048 */
+[class*="tile-"]:not(.tile-2):not(.tile-4):not(.tile-8):not(.tile-16):not(.tile-32):not(.tile-64):not(.tile-128):not(.tile-256):not(.tile-512):not(.tile-1024):not(.tile-2048) {
+	background-color: #3c3a32;
+	color: #f9f6f2;
 }

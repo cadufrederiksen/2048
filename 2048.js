@@ -39,9 +39,21 @@ function handleKeyUp(event) {
 
 	if (moved) {
 		createNewTile();
-		if (checkGameOver()) {
-			isGameOver = true;
-			alert("Game Over! Press Restart to play again.");
+		// Defer game-over check to next paint so the newly spawned tile is visible before alert
+		if (typeof requestAnimationFrame === "function") {
+			requestAnimationFrame(() => {
+				if (checkGameOver()) {
+					isGameOver = true;
+					alert("Game Over! Press Restart to play again.");
+				}
+			});
+		} else {
+			setTimeout(() => {
+				if (checkGameOver()) {
+					isGameOver = true;
+					alert("Game Over! Press Restart to play again.");
+				}
+			}, 0);
 		}
 	}
 }
@@ -148,16 +160,15 @@ function startGame() {
 
 function restartGame() 
 {
-	for (let i = 0; i < 4; i++)
-	{
-		for (let x = 0; x < 4; x++)
-	score = 0;
-	updateScoreUI();
-		{
-			let tile = document.getElementById(i.toString() + "-" + x.toString());
-			tile.innerText = "";
+	for (let i = 0; i < 4; i++) {
+		for (let x = 0; x < 4; x++) {
+			const tile = document.getElementById(i.toString() + "-" + x.toString());
+			updateTileAppearance(tile, 0);
 		}
 	}
+	isGameOver = false;
+	score = 0;
+	updateScoreUI();
 	startGame();
 }
 
@@ -178,7 +189,9 @@ function createNewTile()
 		return false
 
 	const tile = empties[Math.floor(Math.random() * empties.length)];
-	tile.innerText = ramdonValue().toString();	
+	const v = parseInt(ramdonValue(), 10);
+	updateTileAppearance(tile, v);
+	return true;
 }
 
 function ramdonValue () {
@@ -213,7 +226,7 @@ function canMerge() {
 	}
 	return false;
 }
-
+4
 function checkGameOver() {
 	if (hasEmptyTile()) return false;
 	if (canMerge()) return false;
@@ -230,7 +243,7 @@ function getRow(i) {
 function setRow(i, arr) {
 	for (let x = 0; x < 4; x++) {
 		const tile = document.getElementById(i.toString() + '-' + x.toString());
-		tile.innerText = arr[x] ? arr[x].toString() : "";
+		updateTileAppearance(tile, arr[x] || 0);
 	}
 }
 
@@ -243,7 +256,7 @@ function getCol(x) {
 function setCol(x, arr) {
 	for (let i = 0; i < 4; i++) {
 		const tile = document.getElementById(i.toString() + '-' + x.toString());
-		tile.innerText = arr[i] ? arr[i].toString() : "";
+		updateTileAppearance(tile, arr[i] || 0);
 	}
 }
 
@@ -277,4 +290,16 @@ function arraysEqual(a, b) {
 function updateScoreUI() {
 	const scoreEl = document.getElementById("score");
 	if (scoreEl) scoreEl.innerText = score.toString();
+}
+
+// --- Visual update helper ---
+function updateTileAppearance(tile, val) {
+	// Reset to base class
+	tile.className = "tile";
+	if (val && val > 0) {
+		tile.classList.add(`tile-${val}`);
+		tile.innerText = val.toString();
+	} else {
+		tile.innerText = "";
+	}
 }
