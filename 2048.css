@@ -48,9 +48,3 @@ hr {
 .tile-512  { background-color: #edc850; color: #f9f6f2; }
 .tile-1024 { background-color: #edc53f; color: #f9f6f2; }
 .tile-2048 { background-color: #edc22e; color: #f9f6f2; }
-
-/* Fallback for numbers > 2048 */
-[class*="tile-"]:not(.tile-2):not(.tile-4):not(.tile-8):not(.tile-16):not(.tile-32):not(.tile-64):not(.tile-128):not(.tile-256):not(.tile-512):not(.tile-1024):not(.tile-2048) {
-	background-color: #3c3a32;
-	color: #f9f6f2;
-}
